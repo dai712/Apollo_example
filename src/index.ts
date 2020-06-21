@@ -10,15 +10,11 @@ import { buildSchema } from "type-graphql"
 import cors from "cors"
 import connectionOptions from "./typeConfig"
 import express from "express"
-import { UserResolver } from "./resolvers/userResolver"
-
-
-
+import schema from "./schema"
 
 const URL = process.env.APOLLO_URL;
 const PORT = process.env.APOLLO_PORT;
 
-  
 (async () => {
   const app = express();
 
@@ -30,10 +26,7 @@ const PORT = process.env.APOLLO_PORT;
   }
 
   const apolloServer = new ApolloServer({
-      schema: await buildSchema({
-      resolvers: [UserResolver],
-    }),
-
+    schema,
     context: ({ req, res }) => ({ req, res })
 
   });
