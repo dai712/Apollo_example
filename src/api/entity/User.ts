@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm"
+import { ObjectType } from "type-graphql";
 
-
+@ObjectType()
 @Entity()
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -20,7 +21,4 @@ export class User extends BaseEntity {
 
   @Column({ type: "bool", default: false })
   confirmed!: boolean;
-
-  @Column()
-  testPostgres!: boolean;
 }

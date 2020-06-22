@@ -6,6 +6,7 @@ import {
 import path from "path";
 import { makeExecutableSchema } from "graphql-tools";
 
+
 const allTypes = fileLoader(path.join(__dirname, "./api/**/*.graphql"));
 // api 폴더 안에 모든 폴더에 모든 graphql 파일을 불러온다.
 
