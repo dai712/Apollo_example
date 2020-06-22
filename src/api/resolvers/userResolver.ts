@@ -5,7 +5,7 @@ import { isAuth } from "../../utils/isAuth"
 import createJWT  from "../../utils/createJWT"
 import bcrypt from "bcrypt"
 import { MyContext } from "../../utils/MyContext";
-import { PubSub } from "apollo-server-express"
+import { PubSub, withFilter } from "apollo-server-express"
 
 const pubsub = new PubSub()
 let firstToken;
@@ -14,13 +14,13 @@ let lastToken;
 
 export const resolver = {
   Query: {
-    hello: (_: any, { name }: any) => {
-      pubsub.publish("messageAdded", {
-        messageAdded: name
+    hello: (_: any, { name }: any, context: MyContext) => {
+      pubsub.publish("messageReceived", {
+        messageReceived: name
       });
-      return `hello ${name || "World"}`
+      return `${name}`
     },
-    user: (_, { nickname }) => User.findOne({where: {nickname: nickname}}),
+    user: (_, { nickname }) => User.findOne({ where: { nickname: nickname } }),
     users: _ => User.find(),
 
   },
@@ -43,7 +43,7 @@ export const resolver = {
 
     deleteUser: async (_, args: any, context: MyContext) => {
 
-      if(!context.req.headers.authorization) throw new Error ('접속중이 아닙니다.')
+      if (!context.req.headers.authorization) throw new Error('접속중이 아닙니다.')
 
       secToken = context.req.headers["authorization"]
       lastToken = (context.req.headers["cookie"])!.split('=')[1]
@@ -54,7 +54,7 @@ export const resolver = {
       let payload = isAuth(token);
       console.log(isAuth(token))
 
-      await User.delete({nickname: payload!.user.nickname})
+      await User.delete({ nickname: payload!.user.nickname })
       return true
     },
 
@@ -76,8 +76,41 @@ export const resolver = {
     }
   },
   Subscription: {
-    messageAdded: {
-      subscribe: () =>  pubsub.asyncIterator(["messageAdded"])  
+    messageReceived: {
+      subscribe: withFilter(
+        () => pubsub.asyncIterator(["messageReceived"]),
+        async (payload, variables, context) => {
+          
+          return true
+          // const target: Target = payload.messageReceived.target;
+          // const receiverId: string = payload.messageReceived.receiverId;
+          // const target: Target = payload.messageReceived.target;
+          // const receiverId: string = payload.messageReceived.receiverId;
+
+          // if (context.authCheck) {
+          //   if (
+          //     target === Target.PERSONAL &&
+          //     receiverId === context.authUser.id
+          //   ) {
+          //     return true;
+          //   } else if (target === Target.ORGANIZATION) {
+          //     const userRole = await getRepository(UserRole).findOne({
+          //       where: {
+          //         userId: context.authUser.id,
+          //         hospitalId: receiverId,
+          //       },
+          //     });
+
+          //     if (!userRole) return false;
+          //     return true;
+          //   } else {
+          //     return false;
+          //   }
+          // } else {
+          //   return false;
+          // }
+        }
+      )
+      },
     }
   }
-}

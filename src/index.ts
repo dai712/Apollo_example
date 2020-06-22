@@ -16,11 +16,6 @@ import * as WebSocket from 'ws'
 import { SubscriptionServer } from "subscriptions-transport-ws"
 import { createServer } from "http"
 import { execute, subscribe } from "graphql"
-import {  } from "graphiql"
-
-
-const faker = require("faker")
-const pubsub = new PubSub()
 
  
 const WS_PORT = process.env.WS_PORT
@@ -38,7 +33,7 @@ const CLIENT_PORT = process.env.REACT_PORT;
     origin: CLIENT_URL! + CLIENT_PORT!,
     credentials: true,
   }
-
+  
   const apolloServer = new ApolloServer({
     schema,
     context: ({ req, res }) => ({req, res})

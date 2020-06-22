@@ -19,5 +19,5 @@
   }
 
   type Subscription{
-    messageAdded: String!
+    messageReceived: String!
   }
