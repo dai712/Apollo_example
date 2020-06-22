@@ -1,14 +1,17 @@
 {
-    "type": "sqlite",
-    "database": "database.sqlite",
+    "type": "postgres",
+    "host": "localhost",
+    "database" : "postgres",
+    "username" : "postgres",
+    "password" : "postgres",
     "synchronize": true,
     "logging": true,
-    "entities": ["src/api/entity/**/*.ts"],
-    "migrations": ["src/api/migration/**/*.ts"],
-    "subscribers": ["src/api/subscriber/**/*.ts"],
+    "entities": ["src/entity/**/*.ts"],
+    "migrations": ["src/migration/**/*.ts"],
+    "subscribers": ["src/subscriber/**/*.ts"],
     "cli": {
-        "entitiesDir": "src/api/entity",
-        "migrationsDir": "src/api/migration",
-        "subscribersDir": "src/api/subscriber"
+        "entitiesDir": "src/entity",
+        "migrationsDir": "src/migration",
+        "subscribersDir": "src/subscriber"
     }
 }

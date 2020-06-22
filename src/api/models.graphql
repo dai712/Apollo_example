@@ -1,7 +1,0 @@
-type User {
-    id: ID!
-    email: String!
-    nickname: String!
-    password: String!
-    money: Int!
-}
