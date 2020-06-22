@@ -13,7 +13,11 @@
   }
 
   type Mutation{
-    createUser(nickname: String!, email: String!, password: String!): User!
-    loginUser(nickname: String!, email: String!, password: String!) : Boolean
-    deleteUser(id: Int!): Boolean
+    createUser(nickname: String!, email: String!, password: String!): Boolean!
+    loginUser(nickname: String!, email: String!, password: String!) : String!
+    deleteUser: Boolean!
+  }
+
+  type Subscription{
+    messageAdded: String!
   }

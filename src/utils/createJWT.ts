@@ -8,8 +8,8 @@ const createJWT = (user) => {
   let token = jwt.sign({
     user
   }, tok)
-
-  return token;
+  let tokenArr = token.split('.')
+  return tokenArr;
 }
 
 

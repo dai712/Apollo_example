@@ -4,52 +4,55 @@ import "reflect-metadata"
 import { createConnection, getConnection } from "typeorm"
 import {
   ApolloServer,
-  PubSub
+  PubSub,
+  
 } from "apollo-server-express"
 import { buildSchema } from "type-graphql"
 import cors from "cors"
 import express from "express"
 import { Resolver, ResolverMap } from "./api/types/ResolverType"
-import { schema} from "./schema"
+import { schema } from "./schema"
+import * as WebSocket from 'ws'
+import { SubscriptionServer } from "subscriptions-transport-ws"
+import { createServer } from "http"
+import { execute, subscribe } from "graphql"
+import {  } from "graphiql"
 
 
+const faker = require("faker")
+const pubsub = new PubSub()
+
+ 
+const WS_PORT = process.env.WS_PORT
 const SERVER_URL = process.env.APOLLO_URL;
 const SERVER_PORT = process.env.APOLLO_PORT;
 const CLIENT_URL = process.env.REACT_URL;
 const CLIENT_PORT = process.env.REACT_PORT;
 
+
+
 (async () => {
   const app = express();
- 
-
-  await createConnection()
-
+  await createConnection();
   const corsOptions = {
     origin: CLIENT_URL! + CLIENT_PORT!,
-    //origin: '*',
     credentials: true,
   }
 
   const apolloServer = new ApolloServer({
     schema,
-    context: ({ req, res }) => ({ req, res })
-});
+    context: ({ req, res }) => ({req, res})
+  })
   
-
-  app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
-    res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept"
-    );
-  });
-
+  
   apolloServer.applyMiddleware({ app, cors: corsOptions });
-  app.listen(SERVER_PORT, () => {
-    console.log("apollo server start listening");
-  });
 
-  const connection = getConnection();
-  console.log("연결" + connection)
+  const httpServer = createServer(app);
+  apolloServer.installSubscriptionHandlers(httpServer);
+
+  httpServer.listen({ port: SERVER_PORT }, () => {
+    console.log(`🚀 Server ready at http://localhost:${SERVER_PORT}${apolloServer.graphqlPath}`);
+  console.log(`🚀 Subscriptions ready at ws://localhost:${SERVER_PORT}${apolloServer.subscriptionsPath}`);
+  })
 })();
+
