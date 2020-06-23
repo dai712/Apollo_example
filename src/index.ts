@@ -17,10 +17,13 @@ import { SubscriptionServer } from "subscriptions-transport-ws"
 import { createServer } from "http"
 import { execute, subscribe } from "graphql"
 
- 
+
+const cookieparser = require("cookie-parser")
 const WS_PORT = process.env.WS_PORT
+
 const SERVER_URL = process.env.APOLLO_URL;
 const SERVER_PORT = process.env.APOLLO_PORT;
+
 const CLIENT_URL = process.env.REACT_URL;
 const CLIENT_PORT = process.env.REACT_PORT;
 
@@ -39,15 +42,15 @@ const CLIENT_PORT = process.env.REACT_PORT;
     context: ({ req, res }) => ({req, res})
   })
   
-  
+  app.use(cookieparser())
   apolloServer.applyMiddleware({ app, cors: corsOptions });
 
   const httpServer = createServer(app);
   apolloServer.installSubscriptionHandlers(httpServer);
 
-  httpServer.listen({ port: SERVER_PORT }, () => {
-    console.log(`🚀 Server ready at http://localhost:${SERVER_PORT}${apolloServer.graphqlPath}`);
-  console.log(`🚀 Subscriptions ready at ws://localhost:${SERVER_PORT}${apolloServer.subscriptionsPath}`);
+  httpServer.listen({ url: SERVER_URL, port: SERVER_PORT }, () => {
+  console.log(`🚀 Server ready at ${SERVER_URL}:${SERVER_PORT}${apolloServer.graphqlPath}`);
+  console.log(`🚀 Subscriptions ready at ws:${SERVER_URL}:${SERVER_PORT}${apolloServer.subscriptionsPath}`);
   })
 })();
 

@@ -6,18 +6,16 @@ import { MyContext } from "./MyContext";
 
 export const isAuth = (token: string) => {
   let payload;
-  console.log("isauth들어온 토큰"+ token)
   if (!token) {
-    throw new Error("인증 ㄴ1");
+    throw new Error("Incorrect format for token");
   }
 
   try {
-    payload = verify(token, "&YK#t!XQDuN&2wSWcd53kDa-!w8BAjuAL34bdyYe^^D52r6eeYtXLK%yvn5ZuAPKc6^K9ewMz");
-    console.log(payload);
+    payload = verify(token, process.env.JWT_TOKEN!);
     
   } catch (err) {
     console.log(err);
-    throw new Error("인증 ㄴ2");
+    throw new Error(err);
   }
   return payload;
 }

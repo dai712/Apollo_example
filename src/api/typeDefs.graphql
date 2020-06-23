@@ -1,23 +1,30 @@
   type User {
-    id: Int!
+    id: ID!
     nickname: String!
     email: String!
     password: String!
     money: String!
+    confirmed: Boolean!
+    phone: String!
+    birthday: String!
   }
+
 
   type Query {
     hello(name: String): String!
     user(id: Int!): User!
-    users: [User!]!
+    users: [User!]!,
+    publishUserQ(nickname: String!): String!
   }
 
   type Mutation{
-    createUser(nickname: String!, email: String!, password: String!): Boolean!
+    createUser(nickname: String!, email: String!, password: String!,
+                birthday: String, phone: String): Boolean!
     loginUser(nickname: String!, email: String!, password: String!) : String!
     deleteUser: Boolean!
   }
 
   type Subscription{
-    messageReceived: String!
+    messageReceived: String!,
+    publishUser: User!
   }
