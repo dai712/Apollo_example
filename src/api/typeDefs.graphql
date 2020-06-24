@@ -9,12 +9,20 @@
     birthday: String!
   }
 
+  type Message {
+    sendedUserNickname: String!
+    title: String!
+    content: String
+    user: User!
+  }
+
 
   type Query {
     hello(name: String): String!
     user(id: Int!): User!
     users: [User!]!,
     publishUserQ(nickname: String!): String!
+    sendMessageToUser(title: String!, content: String!): Boolean!
   }
 
   type Mutation{
@@ -27,4 +35,5 @@
   type Subscription{
     messageReceived: String!,
     publishUser: User!
+    sendMessageToUser: Message!
   }

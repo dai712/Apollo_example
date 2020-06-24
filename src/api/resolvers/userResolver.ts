@@ -1,5 +1,6 @@
 import { ResolverMap } from "../types/ResolverType"
 import { User } from "../entity/User"
+import { Message } from "../entity/Message"
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
 import { isAuth } from "../../utils/isAuth"
 import { createAccTok, createRefTok }   from "../../utils/createJWT"
@@ -30,7 +31,7 @@ export const resolver = {
         publishUser: args
       });
       return `${args.nickname}`
-    }
+    },
 
   },
   Mutation: {             
@@ -42,7 +43,7 @@ export const resolver = {
       await bcrypt.hash(args.password, 10, async function (err, res) {
         args.password = res;
         await User.create(args).save().then((result) => {
-          console.log("만든 아이디 엔티티" + result)
+          
         })
       })
       return true
@@ -62,7 +63,7 @@ export const resolver = {
       
       let token = firstToken + "." + secToken + "." + lastToken
       let payload = isAuth(token);
-
+        console.log(payload)
       await User.delete({ id: payload.data }).then((result) => {
         console.log("result: " + result)
         if (!result) throw new Error("에러발생");
@@ -93,6 +94,11 @@ export const resolver = {
 
       return token[1]                                           //페이로드는 바로.
     },
+    sendMessageToUser: async (_, args, context) => {            //메세지 전송
+      pubsub.publish("sendMessageToUser", {
+        sendMessageToUser: args
+    });
+    }
     // slidingSession: async (_, args, context: MyContext) =>{
     //     //args === refreshToken, verify(refreshToken) == accessToken의 시그니쳐.
     //   const receivedRefToAcc = isAuth(args)
@@ -162,6 +168,17 @@ export const resolver = {
           return true
         }
       )
-    }
+    },
+    sendMessageToUser: {
+      subscribe: withFilter(
+        () => pubsub.asyncIterator(["sendMessageToUser"]),
+        async (payload, variables, context) => {
+          console.log("페이로드" + JSON.stringify(payload))
+          console.log(context)
+          return true
+        }
+      )
+    },
+
     }
   }

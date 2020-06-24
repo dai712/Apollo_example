@@ -11,7 +11,7 @@ const allTypes = fileLoader(path.join(__dirname, "./api/**/*.graphql"));
 // api 폴더 안에 모든 폴더에 모든 graphql 파일을 불러온다.
 
 const allResolvers = fileLoader(path.join(__dirname, "./api/**/*.ts"));
-// api 폴더 안에 모든 폴더에 모든 js(resolver) 파일을 불러온다.
+// api 폴더 안에 모든 폴더에 모든 ts(resolver) 파일을 불러온다.
 
 
 export const schema = makeExecutableSchema({

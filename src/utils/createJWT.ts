@@ -19,7 +19,7 @@ import jwt from 'jsonwebtoken';
 
 
 const tok = process.env.JWT_TOKEN!;
-const accTokExpTime = 10       //10초
+const accTokExpTime = 60       //10초
 const refTokExpTime = 600         //10분
 
 const createAccTok = (userID) => {

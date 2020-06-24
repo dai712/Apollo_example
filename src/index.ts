@@ -51,6 +51,10 @@ const CLIENT_PORT = process.env.REACT_PORT;
   httpServer.listen({ url: SERVER_URL, port: SERVER_PORT }, () => {
   console.log(`🚀 Server ready at ${SERVER_URL}:${SERVER_PORT}${apolloServer.graphqlPath}`);
   console.log(`🚀 Subscriptions ready at ws:${SERVER_URL}:${SERVER_PORT}${apolloServer.subscriptionsPath}`);
-  })
+  });
+
+  //app.use('/', routerForAPI)
+
+  app.listen(3000, () => console.log("Node server is running for API"))
 })();
 

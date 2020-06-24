@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany } from "typeorm"
 import { ObjectType, Field, ID } from "type-graphql";
+import { Message } from "./Message"
 
 @ObjectType()
 @Entity()
@@ -28,4 +29,10 @@ export class User extends BaseEntity {
   
   @Column({ type: "varchar", default: "000-0000-0000"})
   phone!: String;               //핸드폰번호
+
+  @OneToMany(                   //메세지함
+    (type) => Message,
+    (message) => message.user
+  )
+  messageBox!: Message[];
 }
