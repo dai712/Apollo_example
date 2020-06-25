@@ -5,6 +5,7 @@ import { MyContext } from "./MyContext";
 
 
 export const isAuth = (token: string) => {
+  console.log("ㅋㅋ" + token)
   let payload;
   if (!token) {
     throw new Error("Incorrect format for token");

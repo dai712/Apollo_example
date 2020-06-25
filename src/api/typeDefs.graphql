@@ -18,11 +18,8 @@
 
 
   type Query {
-    hello(name: String): String!
     user(id: Int!): User!
     users: [User!]!,
-    publishUserQ(nickname: String!): String!
-    sendMessageToUser(title: String!, content: String!): Boolean!
   }
 
   type Mutation{
@@ -30,10 +27,11 @@
                 birthday: String, phone: String): Boolean!
     loginUser(nickname: String!, email: String!, password: String!) : String!
     deleteUser: Boolean!
+    sendMessageToUsers(title: String!, content: String!, targetnickname: String!): Boolean!
   }
 
   type Subscription{
     messageReceived: String!,
-    publishUser: User!
+    publishUser: String!
     sendMessageToUser: Message!
   }

@@ -19,13 +19,13 @@ import jwt from 'jsonwebtoken';
 
 
 const tok = process.env.JWT_TOKEN!;
-const accTokExpTime = 60       //10초
+const accTokExpTime = 300       //5분
 const refTokExpTime = 600         //10분
 
 const createAccTok = (userID) => {
   let accToken = jwt.sign({
     data : userID
-  }, tok, {expiresIn : 10})
+  }, tok, {expiresIn : accTokExpTime})
   console.log("생성된 토큰" + accToken)
   
   return accToken.split(".");
