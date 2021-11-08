@@ -26,7 +26,7 @@
     "faker": "^4.1.0",
     "google-auth-library": "^6.0.0",
     "gql": "^1.1.2",
-    "graphiql": "^1.0.2",
+    "graphiql": "^1.4.7",
     "graphql-postgres-subscriptions": "^1.0.5",
     "graphql-tools": "^4.0.8",
     "isemail": "^3.2.0",
